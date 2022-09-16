@@ -8,9 +8,9 @@ namespace BlogAPI.Controllers
     [ApiController]
     public class AuthorController : ControllerBase
     {
-        private readonly IAsyncRepository<Author> authorRepository;
+        private readonly IAuthorRepository authorRepository;
 
-        public AuthorController(IAsyncRepository<Author> authorRepository)
+        public AuthorController(IAuthorRepository authorRepository)
         {
             this.authorRepository = authorRepository;
         }
@@ -53,6 +53,14 @@ namespace BlogAPI.Controllers
         {
             await authorRepository.UpdateAsync(id, author);
             return Ok();
+        }
+
+        [HttpGet]
+        [Route("{id}/nomenclature")]
+        public async Task<IActionResult> Nomenclature(int id)
+        {
+            var result = await authorRepository.GetNomenclatureAsync(id);
+            return Ok(result);
         }
     }
 }

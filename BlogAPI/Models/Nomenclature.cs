@@ -2,7 +2,7 @@
 
 namespace BlogAPI.Models
 {
-    public class Book
+    public class Nomenclature
     {
         [Column("id")]
         public int Id { get; }
@@ -11,6 +11,8 @@ namespace BlogAPI.Models
         [Column("pages")]
         public int Pages { get; set; }
         [Column("authorid")]
-        public string AuthorId { get; set; }
+        public int AuthorId { get; set; }
+        [Column("typeid")]
+        public int TypeId { get; set; }
     }
 }

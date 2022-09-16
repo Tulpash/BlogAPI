@@ -1,30 +1,16 @@
 ﻿using BlogAPI.Models;
 using Dapper;
-using Npgsql;
 
 namespace BlogAPI.Data
 {
-    public class AuthorRepository : IAsyncRepository<Author>
+    public class AuthorRepository : Repository, IAuthorRepository
     {
-        //Table name
-        private readonly string table;
-        //Connection to PGSQL DB
-        private readonly NpgsqlConnection connection;
+        public AuthorRepository(IConfiguration configuration) : base(configuration, "authors") { }
 
-        //Constructor with set up
-        public AuthorRepository(IConfiguration configuration)
-        {
-            table = "authors";
-            string connectionString = configuration.GetConnectionString("default");
-            connection = new NpgsqlConnection(connectionString);
-            connection.Open();
-        }
-
-        //Async CRUD operations
         public async Task<Author> CreateAsync(Author model)
         {
             string query = $"INSERT INTO {table}(firstname, lastname, age) VALUES (@First, @Last, @Age) RETURNING *";
-            object param = new 
+            object param = new
             {
                 First = model.FirstName,
                 Last = model.LastName,
@@ -64,8 +50,8 @@ namespace BlogAPI.Data
 
         public async Task UpdateAsync(int id, Author model)
         {
-            string query = $"UPDATE {table} SET (first_name, last_name, age) = (@First, @Last, @Age) WHERE id = @Id";
-            object param = new 
+            string query = $"UPDATE {table} SET (firstname, lastname, age) = (@First, @Last, @Age) WHERE id = @Id";
+            object param = new
             {
                 Id = id,
                 First = model.FirstName,
@@ -75,11 +61,15 @@ namespace BlogAPI.Data
             await connection.QueryAsync(query, param);
         }
 
-        //Finalizer to close connection
-        ~AuthorRepository()
+        public async Task<IEnumerable<Nomenclature>> GetNomenclatureAsync(int authorId)
         {
-            if (connection != null)
-                connection.Close();
+            string query = "SELECT * FROM nomenclature WHERE authorid = @AuthorId";
+            object param = new 
+            {
+                AuthorId = authorId
+            };
+            var list = await connection.QueryAsync<Nomenclature>(query, param);
+            return list;
         }
     }
 }

@@ -1,5 +1,4 @@
 using BlogAPI.Data;
-using BlogAPI.Models;
 
 
 
@@ -7,8 +6,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
-builder.Services.AddScoped<IAsyncRepository<Author>, AuthorRepository>();
-
+builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
+builder.Services.AddScoped<INomeclatureRepository, NomenclatureRepository>();
 
 
 var app = builder.Build();
