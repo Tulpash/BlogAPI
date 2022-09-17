@@ -1,13 +1,12 @@
 using BlogAPI.Data;
 
-
-
 var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddScoped<IAuthorRepository, AuthorRepository>();
 builder.Services.AddScoped<INomeclatureRepository, NomenclatureRepository>();
+builder.Services.AddScoped<INomenclatureTypeRepository, NomenclatureTypeRepository>();
 
 
 var app = builder.Build();

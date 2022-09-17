@@ -4,7 +4,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace BlogAPI.Controllers
 {
-    [Route("nomenclature")]
+    [Route("nomenclatures")]
     [ApiController]
     public class NomenclatureController : ControllerBase
     {
